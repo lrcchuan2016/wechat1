@@ -15,5 +15,23 @@ namespace WeChat.Web.Controllers
 
             return View();
         }
+
+        [Route("About")]
+        public ActionResult About()
+        {
+            ViewBag.Title = "About";
+
+            return View();
+        }
+
+        [Route("Contact")]
+        public ActionResult Contact()
+        {
+            ViewBag.Title = "Contact";
+
+            return View();
+        }
+
+
     }
 }

@@ -20,24 +20,11 @@ namespace WeChat.Http.Controllers
         }
 
         [Route()]
-        public HttpResponseMessage Post()
+        public HttpResponseMessage Post([FromBody]string receivingMessage)
         {
-
-            //IEnumerable<KeyValuePair<string, string>> queryStr = request.GetQueryNameValuePairs();
-            //string signature = queryStr.GetValue("signature");
-            //string timestamp = queryStr.GetValue("timestamp");
-            //string nonce = queryStr.GetValue("nonce");
-            //string encrypt_type = queryStr.GetValue("encrypt_type");
-            //if (encrypt_type == "aes")
-            //{
-
-            //}
-            //else
-            //{
-
-            //}
-            return null;
-
+            return new ReceivingModel().Handle(this.Request, receivingMessage);
         }
+
+
     }
 }

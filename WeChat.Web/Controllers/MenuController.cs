@@ -7,6 +7,7 @@ using WeChat.Api.Client;
 
 namespace WeChat.Web.Controllers
 {
+    //[Authorize]
     [RoutePrefix("Admin/Menu")]
     public class MenuController : Controller
     {
@@ -23,6 +24,7 @@ namespace WeChat.Web.Controllers
         [Route("Create")]
         public ActionResult Create()
         {
+            ViewBag.Result = string.Empty;
             return View();
         }
 
@@ -30,12 +32,17 @@ namespace WeChat.Web.Controllers
         [Route("Create")]
         public ActionResult Create(FormCollection collection)
         {
+            string json = collection["menu"].Replace("\r", string.Empty).Replace("\n", string.Empty);
+            ViewBag.Result = ApiClient.CreateMenu(json);           
             return View();
         }
 
         [Route("Delete")]
         public ActionResult Delete()
         {
+            string json = ApiClient.QueryMenu();
+            ViewBag.Json = json;
+            ViewBag.Result = string.Empty;
             return View();
         }
 
@@ -43,6 +50,7 @@ namespace WeChat.Web.Controllers
         [Route("Delete")]
         public ActionResult Delete(FormCollection collection)
         {
+            ViewBag.Result = ApiClient.DeleteMenu();
             return View();
         }
 
