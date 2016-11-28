@@ -1,4 +1,5 @@
 /.vs
 /*.suo
-/WeChat.Web/bin
-/WeChat.Web/obj
+/WeChat.Web/bin/
+/WeChat.Web/obj/
+/WeChat.Web/log/
