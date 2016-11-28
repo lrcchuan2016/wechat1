@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using XData.Diagnostics.Log;
 
 namespace WeChat.Data.Components
 {
@@ -23,6 +24,7 @@ namespace WeChat.Data.Components
             dict.Add("MsgType", msgType);
             if (msgType == "event")
             {
+                EventFillDictionary(received, dict);
                 return dict;
             }
 
@@ -72,22 +74,23 @@ namespace WeChat.Data.Components
         {
             string eventType = received.Element("Event").Value;
             dict.Add("Event", eventType);
+            Log4.Logger.Debug(eventType);
             switch (eventType)
             {
                 case "subscribe":
-                    if (received.Element("EventKey") != null)
-                    {
-                        // Starts with "qrscene_"
-                        dict.Add("EventKey", received.Element("EventKey").Value);
-                        dict.Add("Ticket", received.Element("Ticket").Value);
-                    }
+                    //if (received.Element("EventKey") != null)
+                    //{
+                    //    // Starts with "qrscene_"
+                    //    dict.Add("EventKey", received.Element("EventKey").Value);
+                    //    dict.Add("Ticket", received.Element("Ticket").Value);
+                    //}
                     break;
                 case "unsubscribe":
                     break;
                 case "SCAN":
-                    //dict.Add("EventKey", uint.Parse(received.Element("EventKey").Value))
-                    dict.Add("EventKey", long.Parse(received.Element("EventKey").Value));
-                    dict.Add("Ticket", received.Element("Ticket").Value);
+                    ////dict.Add("EventKey", uint.Parse(received.Element("EventKey").Value))
+                    //dict.Add("EventKey", long.Parse(received.Element("EventKey").Value));
+                    //dict.Add("Ticket", received.Element("Ticket").Value);
                     break;
                 case "LOCATION":
                     dict.Add("Latitude", double.Parse(received.Element("Latitude").Value));

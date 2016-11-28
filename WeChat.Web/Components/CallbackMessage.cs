@@ -13,6 +13,7 @@ namespace WeChat.Data.Components
         {
             XElement message = CreateMessage("text", received);
             XElement node = new XElement("Content", new XCData(content));
+            message.Add(node);
             return message;
         }
 
@@ -20,6 +21,7 @@ namespace WeChat.Data.Components
         {
             XElement message = CreateMessage("image", received);
             XElement node = new XElement("Image");
+            message.Add(node);
             node.Add(new XElement("MediaId", new XCData(media_id)));
             return message;
         }
@@ -28,6 +30,7 @@ namespace WeChat.Data.Components
         {
             XElement message = CreateMessage("voice", received);
             XElement node = new XElement("Voice");
+            message.Add(node);
             node.Add(new XElement("MediaId", new XCData(media_id)));
             return message;
         }
@@ -36,6 +39,7 @@ namespace WeChat.Data.Components
         {
             XElement message = CreateMessage("video", received);
             XElement node = new XElement("Video");
+            message.Add(node);
             node.Add(new XElement("MediaId", new XCData(media_id)),
                 new XElement("Title", new XCData(title)), new XElement("Description", new XCData(description)));
             return message;
@@ -45,6 +49,7 @@ namespace WeChat.Data.Components
         {
             XElement message = CreateMessage("music", received);
             XElement node = new XElement("Music");
+            message.Add(node);
             node.Add(new XElement("Title", new XCData(title)), new XElement("Description", new XCData(description)),
                 new XElement("MusicUrl", new XCData(musicUrl)), new XElement("HQMusicUrl", new XCData(hqMusicUrl)),
                 new XElement("ThumbMediaId", new XCData(thumbMediaId)));
@@ -56,6 +61,7 @@ namespace WeChat.Data.Components
             XElement message = CreateMessage("news", received);
             message.SetElementValue("ArticleCount", items.Count());
             XElement node = new XElement("Articles");
+            message.Add(node);
             foreach (Dictionary<string, object> item in items)
             {
                 XElement itemNode = new XElement("item");
@@ -76,7 +82,7 @@ namespace WeChat.Data.Components
             node = new XElement("FromUserName", new XCData(received["ToUserName"].ToString()));
             message.Add(node);
             message.SetElementValue("CreateTime", (int)((DateTime.Now - DateBase).TotalSeconds));
-            node = new XElement("MsgType", new XCData("msgType"));
+            node = new XElement("MsgType", new XCData(msgType));
             message.Add(node);
             return message;
         }

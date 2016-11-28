@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WeChat.Http.Models;
@@ -20,11 +19,9 @@ namespace WeChat.Http.Controllers
         }
 
         [Route()]
-        public HttpResponseMessage Post([FromBody]string receivingMessage)
+        public HttpResponseMessage Post()
         {
-            return new ReceivingModel().Handle(this.Request, receivingMessage);
+            return new ReceivingModel().Handle(this.Request);
         }
-
-
     }
 }

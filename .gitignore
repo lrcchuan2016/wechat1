@@ -1,2 +1,4 @@
 /.vs
 /*.suo
+/WeChat.Web/bin
+/WeChat.Web/obj

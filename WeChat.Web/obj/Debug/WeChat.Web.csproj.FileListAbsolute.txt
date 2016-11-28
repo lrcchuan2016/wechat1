@@ -59,4 +59,3 @@ D:\Test\WeChat.Web\WeChat.Web\bin\System.Web.WebPages.Deployment.xml
 D:\Test\WeChat.Web\WeChat.Web\bin\System.Web.WebPages.Razor.xml
 D:\Test\WeChat.Web\WeChat.Web\obj\Debug\WeChat.Web.dll
 D:\Test\WeChat.Web\WeChat.Web\obj\Debug\WeChat.Web.pdb
-D:\Test\WeChat.Web\WeChat.Web\obj\Debug\WeChat.Web.csprojResolveAssemblyReference.cache

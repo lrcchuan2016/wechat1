@@ -138,6 +138,7 @@
     <Compile Include="Components\CallbackMessage.cs" />
     <Compile Include="Components\Cryptography.cs" />
     <Compile Include="Components\Logger.cs" />
+    <Compile Include="Components\AppMenu.cs" />
     <Compile Include="Components\ReceivingMessage.cs" />
     <Compile Include="Components\Sample.cs" />
     <Compile Include="Components\WXBizMsgCrypt.cs" />
@@ -150,10 +151,11 @@
     <Compile Include="Components\KeyValuePairsExtensions.cs" />
     <Compile Include="Components\SHA1Hasher.cs" />
     <Compile Include="Models\AccessModel.cs" />
+    <Compile Include="Models\MenuModel.cs" />
     <Compile Include="Models\ReceivingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DevConfig.cs" />
-    <Compile Include="ReceivingHandler.cs" />
+    <Compile Include="Components\DevConfig.cs" />
+    <Compile Include="Components\ReceivingHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Components\Readme.txt" />

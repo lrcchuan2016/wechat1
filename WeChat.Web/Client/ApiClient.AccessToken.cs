@@ -14,7 +14,7 @@ namespace WeChat.Api.Client
     {
         // Access_Token
 
-        protected const string ACCESS_TOKEN_File_NAME = "access_token";
+        protected const string ACCESS_TOKEN_FILE_NAME = "access_token";
         protected Dictionary<string, object> AccessToken = null;
         protected System.Threading.Timer Timer;
 
@@ -87,14 +87,14 @@ namespace WeChat.Api.Client
                 string encrypted = Tencent.Cryptography.AES_encrypt(json, DevConfig.EncodingAESKey, DevConfig.AppID);
 
                 //
-                string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ACCESS_TOKEN_File_NAME);
+                string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ACCESS_TOKEN_FILE_NAME);
                 File.WriteAllText(fileName, encrypted, Encoding.UTF8);
             }
         }
 
         protected Dictionary<string, object> Read()
         {
-            string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ACCESS_TOKEN_File_NAME);
+            string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ACCESS_TOKEN_FILE_NAME);
             if (!File.Exists(fileName)) return null;
 
             //          
