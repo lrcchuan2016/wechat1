@@ -56,20 +56,25 @@ namespace WeChat.Data.Components
                         switch (eventType)
                         {
                             case "subscribe":
-                                Log4.Logger.Debug("EventKey:" + dict["EventKey"].ToString());
-                                Log4.Logger.Debug("Ticket:" + dict["Ticket"].ToString());
-                                //if (dict.ContainsKey("EventKey"))
-                                //{
-                                //    //dict["EventKey"];
-                                //    //dict["Ticket"];
-                                //}
+                                if (dict.ContainsKey("EventKey"))
+                                {
+                                    string eventKey = dict["EventKey"].ToString();
+                                    if (eventKey.StartsWith("qrscene_"))
+                                    {
+                                        string ticket = dict["Ticket"].ToString();
+                                    }
+                                }
                                 return CallbackMessage.CreateTextMessage("Welcome", dict);
                             case "unsubscribe":
+                                // send successful,but the client never received
                                 return CallbackMessage.CreateTextMessage("Goodbye", dict);
                             case "SCAN":
-                                Log4.Logger.Debug("EventKey:" + dict["EventKey"].ToString());
-                                Log4.Logger.Debug("Ticket:" + dict["Ticket"].ToString());
-                                return CallbackMessage.CreateTextMessage("Welcome back", dict);
+                                // ? never received
+                                {
+                                    string eventKey = dict["EventKey"].ToString();
+                                    string ticket = dict["Ticket"].ToString();
+                                    return CallbackMessage.CreateTextMessage("Welcome back", dict);
+                                }
                             case "LOCATION":
                                 {
                                     StringBuilder sb = new StringBuilder();
@@ -99,9 +104,7 @@ namespace WeChat.Data.Components
                     break;
             }
 
-            Exception exception = new NotSupportedException(msgType);
-            Log4.Logger.Error("Handle receiving message", exception);
-            throw exception;
+            throw new NotSupportedException(msgType);
         }
 
 

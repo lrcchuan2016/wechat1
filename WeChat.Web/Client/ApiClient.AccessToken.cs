@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using WeChat.Dev.Configuration;
+using XData.Diagnostics.Log;
 
 namespace WeChat.Api.Client
 {
@@ -68,28 +69,31 @@ namespace WeChat.Api.Client
             // {"access_token":"ACCESS_TOKEN","expires_in":7200}
             // {"errcode":40013,"errmsg":"invalid appid"}
             string json = ApiGet(relativeUri);
+            Dictionary<string, object> accessToken = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            if (accessToken.ContainsKey("access_token"))
+            {
+                Log4.Logger.Debug(json);
 
-            Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-            result.Add("access_token_start", DateTime.Now);
-
-            Save(result);
-
-            AccessToken = result;
+                accessToken.Add("access_token_start", DateTime.Now);
+                Save(accessToken);
+                AccessToken = accessToken;
+            }
+            else
+            {
+                Log4.Logger.Error(json);
+            }
         }
 
         protected void Save(Dictionary<string, object> accessToken)
         {
-            if (accessToken.ContainsKey("access_token"))
-            {
-                string json = JsonConvert.SerializeObject(accessToken);
+            string json = JsonConvert.SerializeObject(accessToken);
 
-                //
-                string encrypted = Tencent.Cryptography.AES_encrypt(json, DevConfig.EncodingAESKey, DevConfig.AppID);
+            //
+            string encrypted = Tencent.Cryptography.AES_encrypt(json, DevConfig.EncodingAESKey, DevConfig.AppID);
 
-                //
-                string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ACCESS_TOKEN_FILE_NAME);
-                File.WriteAllText(fileName, encrypted, Encoding.UTF8);
-            }
+            //
+            string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ACCESS_TOKEN_FILE_NAME);
+            File.WriteAllText(fileName, encrypted, Encoding.UTF8);
         }
 
         protected Dictionary<string, object> Read()

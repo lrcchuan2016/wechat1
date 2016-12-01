@@ -17,13 +17,12 @@ namespace WeChat.Http.Models
 
         public string Create(string json)
         {
-            AppMenu.Save(json);
             return ApiClient.CreateMenu(json.Replace("\r", string.Empty).Replace("\n", string.Empty));
         }
         
         public string Delete()
         {
-            return ApiClient.QueryMenu();
+            return ApiClient.DeleteMenu();
         }
 
 

@@ -19,25 +19,39 @@ namespace WeChat.Api.Client
             HttpClient.BaseAddress = new Uri(baseAddress);
         }
 
+        protected Dictionary<string, List<string>> CallbackIP = null;
+
         // IP Address List
-        public Dictionary<string, List<string>> GetCallbackIP()
+        public List<string> GetCallbackIP()
         {
-            string accessToken = GetAccessToken();
+            if (CallbackIP == null)
+            {
+                string accessToken = GetAccessToken();
 
-            string relativeUri = string.Format("/cgi-bin/getcallbackip?access_token={0}", accessToken);
+                string relativeUri = string.Format("/cgi-bin/getcallbackip?access_token={0}", accessToken);
 
-            // {"ip_list":["127.0.0.1","127.0.0.1"]}
-            // {"errcode":40013,"errmsg":"invalid appid"}
-            string json = ApiGet(relativeUri);
-            Dictionary<string, List<string>> result = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
-            return result;
+                // {"ip_list":["127.0.0.1","127.0.0.1"]}
+                // {"errcode":40013,"errmsg":"invalid appid"}
+                string json = ApiGet(relativeUri);
+                Dictionary<string, List<string>>  callbackIP = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
+                if (callbackIP.ContainsKey("ip_list"))
+                {
+                    Log4.Logger.Debug(json);
+
+                    CallbackIP = callbackIP;
+                }
+                else
+                {
+                    Log4.Logger.Error(json);
+                }
+            }
+            return CallbackIP["ip_list"];
         }
 
         protected string ApiGet(string relativeUri)
         {
             HttpResponseMessage response = HttpClient.GetAsync(relativeUri).Result;
             string json = response.Content.ReadAsStringAsync().Result;
-            Log(json);
             return json;
         }
 
@@ -45,20 +59,7 @@ namespace WeChat.Api.Client
         {
             HttpResponseMessage response = HttpClient.PostAsync(relativeUri, content).Result;
             string json = response.Content.ReadAsStringAsync().Result;
-            Log(json);
             return json;
-        }
-
-        protected void Log(string json)
-        {
-            if (json.Contains("errcode"))
-            {
-                Log4.Logger.Error(json);
-            }
-            else
-            {
-                Log4.Logger.Debug(json);
-            }
         }
 
         private static ApiClient Instance = null;

@@ -4,24 +4,40 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using WeChat.Http.Models;
+using XData.Diagnostics.Log;
 
 namespace WeChat.Http.Controllers
 {
-    // lvchengnongke@163.com
-    // lcnk20140121LCNK
     [RoutePrefix("")]
     public class InterfaceController : ApiController
     {
         [Route()]
         public HttpResponseMessage Get()
         {
-            return new AccessModel().Access(this.Request);
+            try
+            {
+                return new AccessModel().Access(this.Request);
+            }
+            catch (Exception e)
+            {
+                Log4.Logger.Error("Access", e);
+                throw e;
+            }
         }
 
         [Route()]
         public HttpResponseMessage Post()
         {
-            return new ReceivingModel().Handle(this.Request);
+            try
+            {
+                return new ReceivingModel().Handle(this.Request);
+            }
+            catch(Exception e)
+            {
+                Log4.Logger.Error("Handle", e);
+                throw e;
+            }
         }
+
     }
 }
