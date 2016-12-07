@@ -17,14 +17,16 @@ namespace WeChat.Web.Controllers
         // https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
         public ActionResult Authorize()
         {
+            string redirect_uri = Server.UrlEncode(RedirectUri);
+
             // scope: snsapi_base or snsapi_userinfo
             string url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope={2}&state={3}#wechat_redirect";
-            url = string.Format(url, DevConfig.AppID, RedirectUri, "snsapi_userinfo", "state");
+            url = string.Format(url, DevConfig.AppID, redirect_uri, "snsapi_userinfo", "state");
             return Redirect(url);
         }
 
         public ActionResult Index()
-        {            
+        {
             string code = this.Request.QueryString["code"];
             if (string.IsNullOrWhiteSpace(code))
             {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 
 namespace WeChat.Data.Components
 {
@@ -18,16 +17,14 @@ namespace WeChat.Data.Components
             File.WriteAllText(fileName, json, Encoding.UTF8);
         }
 
-        private static string ReadJson()
+        private static string Read()
         {
             string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppMenu.MENU_FILE_NAME);
             return File.ReadAllText(fileName, Encoding.UTF8);
         }
 
-        public static Dictionary<string, object>[] Read()
+        private static Dictionary<string, object>[] ToDictionary(string json)
         {
-            string json = ReadJson();
-
             Dictionary<string, Dictionary<string, object>[]> menu = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>[]>>(json);
             Dictionary<string, object>[] items = menu["button"];
             for (int i = 0; i < items.Length; i++)
@@ -60,6 +57,35 @@ namespace WeChat.Data.Components
                 }
             }
             return items;
+        }
+
+        private static Dictionary<string, object>[] _Menu = null;
+
+        public static Dictionary<string, object>[] Menu
+        {
+            get
+            {
+                if (_Menu == null)
+                {
+                    string json = Read();
+                    _Menu = ToDictionary(json);
+                }
+                return _Menu;
+            }
+        }
+
+        public static Dictionary<string, object> Find(string key)
+        {
+            Dictionary<string, object> menu = Menu.FirstOrDefault(d => d.ContainsKey("key") && d["key"].ToString() == key);
+            if (menu != null) return menu;
+
+            IEnumerable<Dictionary<string, object>[]> sub_menus = Menu.Where(d => d.ContainsKey("sub_button")).Select(d => d["sub_button"] as Dictionary<string, object>[]);
+            foreach (Dictionary<string, object>[] sub_menu in sub_menus)
+            {
+                Dictionary<string, object> item = sub_menu.FirstOrDefault(d => d.ContainsKey("key") && d["key"].ToString() == key);
+                if (item != null) return item;
+            }
+            return null;
         }
 
 

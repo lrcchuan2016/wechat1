@@ -88,8 +88,10 @@ namespace WeChat.Data.Components
                                 {
                                     StringBuilder sb = new StringBuilder();
                                     sb.AppendLine("menu-click event:");
-                                    sb.AppendLine("key:" + dict["EventKey"].ToString());
-                                    sb.AppendLine("name:" + "");
+                                    string key = dict["EventKey"].ToString();
+                                    sb.AppendLine("key:" + key);
+                                    Dictionary<string, object> menu = AppMenu.Find(key);
+                                    sb.AppendLine("name:" + menu["name"].ToString());
                                     return CallbackMessage.CreateTextMessage(sb.ToString(), dict);
                                 }
                             case "VIEW":
